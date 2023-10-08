@@ -37,10 +37,10 @@ rl.on('close', () => {
 });
 
 class Queue {
-  constructor(list) {
-    this.queue = list;
+  constructor() {
+    this.queue = {};
     this.headIndex = 0;
-    this.tailIndex = list.length;
+    this.tailIndex = 0;
   }
 
   enqueue(num) {
@@ -49,41 +49,43 @@ class Queue {
   }
 
   dequeue() {
+    if (this.headIndex === this.tailIndex) return undefined;
     const item = this.queue[this.headIndex];
-    delete this.queue[this.headIndex]; //시간 복잡도 O(n)
+    delete this.queue[this.headIndex];
     this.headIndex++;
     return item;
   }
 
-  peek() {
-    return this.queue[this.headIndex];
+  delete(cityIndex) {
+    if (Number(cityIndex) === this.headIndex) this.dequeue();
+    else {
+      delete this.queue[cityIndex];
+      Object.keys(this.queue).forEach((k, v) => {
+        if (Number(k) > Number(cityIndex)) {
+          const city = this.queue[k];
+          delete this.queue[k];
+          this.queue[--k] = city;
+        }
+      });
+      this.tailIndex--;
+    }
   }
 
   getLength() {
     return this.tailIndex - this.headIndex;
   }
-
-  search(city) {
-    //indexOf 시간 복잡도 O(n)
-    return this.queue.indexOf(city);
-  }
-
-  delete(cityIndex) {
-    this.queue.splice(cityIndex, 1); //시간 복잡도 O(n)
-    this.tailIndex--;
-  }
 }
 
 function solution(cacheSize, cities) {
   let answer = 0;
-  let cacheArr = new Queue([]);
+  let cacheArr = new Queue();
 
   if (cacheSize === 0) return cities.length * 5;
 
   cities.forEach((city) => {
     const currCity = city.toLowerCase();
-    const cityIndex = cacheArr.search(currCity);
-    if (cityIndex !== -1) {
+    if (Object.values(cacheArr.queue).includes(currCity)) {
+      let cityIndex = Object.keys(cacheArr.queue).find((key) => cacheArr.queue[key] === currCity);
       cacheArr.delete(cityIndex);
       cacheArr.enqueue(currCity);
 
@@ -96,8 +98,6 @@ function solution(cacheSize, cities) {
       answer += 5;
     }
   });
-
-  //결국엔 cityArr를 돌면서 indexOf를 매번 사용하므로 시간복잡도가 O(N^2)이 되는 풀이..
 
   return answer;
 }

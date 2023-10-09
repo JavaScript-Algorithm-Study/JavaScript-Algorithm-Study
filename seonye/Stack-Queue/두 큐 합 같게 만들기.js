@@ -13,8 +13,13 @@
 - 큐의 원소 중 큐의 원소 합이 되어야할 숫자보다 큰 원소가 있는 경우
 - 두 개의 큐를 이어 붙였을때, 연속되는 원소의 합으로 목표합을 만들 수 없는 경우
 
-실패 케이스 (시간초과)
-11 19 20 21 22 23 24 28 30
+시간초과 해결
+큐에 데이터를 저장할 변수의 형식을 객체로 변경하여 dequeue의 시간복잡도를 O(1)로 줄임
+enqueue와 dequeue를 할 때마다 큐의 합을 구하여 시간복잡도를 O(1)로 줄임
+
+최악의 경우 queue1의 원소를 모두 queue2로 보내고
+queue2의 원소 하나를 제외한 모든 원소를 다시 queue1으로 보내는 경우로 
+큐의 길이의 * 3으로 설정
 */
 const readline = require('readline');
 let rl = readline.createInterface({
@@ -37,21 +42,25 @@ rl.on('close', () => {
 });
 
 class Queue {
-  constructor(list) {
-    this.queue = list;
+  constructor() {
+    this.queue = {};
     this.headIndex = 0;
-    this.tailIndex = list.length;
+    this.tailIndex = 0;
+    this.sum = 0;
   }
 
   enqueue(num) {
     this.queue[this.tailIndex] = num;
     this.tailIndex++;
+    this.sum += num;
   }
 
   dequeue() {
+    if (this.headIndex === this.tailIndex) return undefined;
     const item = this.queue[this.headIndex];
     delete this.queue[this.headIndex];
     this.headIndex++;
+    this.sum -= item;
     return item;
   }
 
@@ -63,30 +72,24 @@ class Queue {
     return this.tailIndex - this.headIndex;
   }
 
-  getSum() {
-    return this.queue.reduce((a, b) => a + b, 0);
-  }
-
-  isEmpty() {
-    return this.getLength() === 0;
-  }
-
-  search(num) {
-    //indexOf 시간 복잡도 O(n)
-    return this.queue.indexOf(num) !== -1;
-  }
-
   hasLargerElement(num) {
-    return this.queue.filter((element) => element > num).length > 0 ? true : false;
+    return Object.values(this.queue).filter((element) => element > num).length > 0 ? true : false;
   }
 }
 
 function solution(queue1, queue2) {
   let answer = -1;
-  let list1 = new Queue([...queue1]);
-  let list2 = new Queue([...queue2]);
+  let list1 = new Queue();
+  let list2 = new Queue();
 
-  const totalSum = list1.getSum() + list2.getSum();
+  queue1.forEach((element) => {
+    list1.enqueue(element);
+  });
+  queue2.forEach((element) => {
+    list2.enqueue(element);
+  });
+
+  const totalSum = list1.sum + list2.sum;
   // 모든 큐의 원소의 합계가 홀수인 경우 -1 리턴
   if (totalSum % 2 !== 0) return answer;
 
@@ -98,9 +101,9 @@ function solution(queue1, queue2) {
   answer = 0;
   let isGetSameSum = false;
 
-  while (answer < queue1.length * 4) {
-    let list1Sum = list1.getSum();
-    let list2Sum = list2.getSum();
+  while (answer < queue1.length * 3) {
+    let list1Sum = list1.sum;
+    let list2Sum = list2.sum;
 
     if (list1Sum > list2Sum) {
       const element = list1.dequeue();

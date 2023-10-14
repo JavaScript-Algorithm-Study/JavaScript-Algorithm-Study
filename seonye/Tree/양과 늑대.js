@@ -80,7 +80,7 @@ function solution(info, edges) {
         if (!currNode.left && !currNode.right) continue;
         if (wolfCnt + 1 >= sheepCnt) {
           if (needVisit.length === 0) break;
-          pushNeedVisit(currNode);
+          needVisit.push(currNode);
         } else {
           visited.push(currNode.data);
           wolfCnt += 1;

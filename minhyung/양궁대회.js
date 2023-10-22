@@ -22,6 +22,8 @@
 // 만약 라이언이 어떤 경우에도 무조건 지거나 비겨면 [-1] 을 리턴함
 
 // n = 화살개수, info = [10,9,8,...,0]
+
+// n = 화살개수, info = [10,9,8,...,0]
 function solution(n, info) {
   const lastIdx = info.length;
   let maxScoreDiff = -1;
@@ -31,12 +33,10 @@ function solution(n, info) {
     if (now >= 11) {
       const [apeach, lion] = calcScore(info, hitsLion);
       const scoreDiff = lion - apeach;
-      if (maxScoreDiff < scoreDiff) {
+      if (maxScoreDiff < scoreDiff && scoreDiff !== 0) {
         maxScoreDiff = scoreDiff;
         result = [...hitsLion];
-        if (leftArrow > 0) {
-          result[10] = leftArrow;
-        }
+        result[10] = leftArrow;
       } else if (maxScoreDiff === scoreDiff) {
         result = getMoreSmaller(result, hitsLion);
       }

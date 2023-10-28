@@ -1,6 +1,6 @@
 /*
-문제 : https://school.programmers.co.kr/learn/courses/30/lessons/92342
-난이도 : Level 2
+문제 : https://school.programmers.co.kr/learn/courses/30/lessons/60062
+난이도 : Level 3
 
 1. 문제 설명
 외벽의 총 둘레는 n미터

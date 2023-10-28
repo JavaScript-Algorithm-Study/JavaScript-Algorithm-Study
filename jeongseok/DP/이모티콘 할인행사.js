@@ -67,7 +67,6 @@ function solution(users, emoticons) {
     for (let i = cur; i < emoticons.length; i++) {
       for (let j = 0; j < 4; j++) {
         if (isVisited[i] === 0) {
-          console.log(isVisited);
           isVisited[i] = 1;
           discountArr[i] = discountPercent[j];
           backtracking(cur + 1, depth);
@@ -79,16 +78,3 @@ function solution(users, emoticons) {
 
   return [maxJoin, maxMoney];
 }
-
-solution(
-  [
-    [40, 2900],
-    [23, 10000],
-    [11, 5200],
-    [5, 5900],
-    [40, 3100],
-    [27, 9200],
-    [32, 6900],
-  ],
-  [1300, 1500, 1600, 4900]
-);

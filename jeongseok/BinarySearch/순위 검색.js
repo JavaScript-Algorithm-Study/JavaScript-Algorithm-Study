@@ -1,30 +1,4 @@
-const cases = [
-  ["cpp", "java", "python", "-"],
-  ["backend", "frontend", "-"],
-  ["junior", "senior", "-"],
-  ["chicken", "pizza", "-"],
-];
-
 let lists = {};
-
-let isVisited = new Array(4).fill(0);
-
-function makeList(cur, depth, str) {
-  if (cur === depth) {
-    lists[str] = [];
-  }
-
-  for (let i = cur; i < depth; i++) {
-    for (let j = 0; j < cases[i].length; j++) {
-      if (!isVisited[i]) {
-        let originStr = str;
-        isVisited[i] = 1;
-        makeList(cur + 1, depth, str + cases[i][j]);
-        isVisited[i] = 0;
-      }
-    }
-  }
-}
 
 function makeListByInfo(info) {
   for (let i = 0; i < info.length; i++) {
@@ -35,7 +9,11 @@ function makeListByInfo(info) {
 
     function tmpBacktracking(cur, depth, str) {
       if (cur === depth) {
-        lists[str].push(score);
+        if (!lists[str]) {
+          lists[str] = [score];
+        } else {
+          lists[str].push(score);
+        }
       }
 
       for (let i = cur; i < depth; i++) {
@@ -92,7 +70,6 @@ function findPeopleCount(query) {
 function solution(info, query) {
   let answer = [];
 
-  makeList(0, 4, "");
   makeListByInfo(info);
   sortLists();
 

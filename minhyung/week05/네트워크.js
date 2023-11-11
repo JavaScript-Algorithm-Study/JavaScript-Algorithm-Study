@@ -1,4 +1,4 @@
-// 문제링크: https://school.programmers.co.kr/learn/courses/30/lessons/72412
+// 문제링크: https://school.programmers.co.kr/learn/courses/30/lessons/43162
 // 시작날짜: 2023.11.11
 // 시작시간: 13:12
 // 종료시간: 13:20

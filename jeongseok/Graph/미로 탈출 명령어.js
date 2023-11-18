@@ -90,11 +90,11 @@ function solution(n, m, x, y, r, c, k) {
 
   bfs(x - 1, y - 1);
 
+  console.log(pathArr);
+
   if (pathArr[r - 1][c - 1].length === k) {
     return pathArr[r - 1][c - 1];
   } else {
     return "impossible";
   }
 }
-
-solution(3, 4, 2, 3, 3, 1, 5);

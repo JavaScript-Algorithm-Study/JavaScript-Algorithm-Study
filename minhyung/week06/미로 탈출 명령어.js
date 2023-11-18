@@ -60,7 +60,8 @@ function solution(n, m, x, y, r, c, k) {
     }
     for (const [yy, xx, str] of next) {
       const [ny, nx] = [y + yy, x + xx];
-      if (!isInBoard(ny, nx) || path >= result) continue;
+      if (!isInBoard(ny, nx)) continue;
+      if (path + str >= result) continue;
 
       dfs(ny, nx, dist + 1, path + str);
     }

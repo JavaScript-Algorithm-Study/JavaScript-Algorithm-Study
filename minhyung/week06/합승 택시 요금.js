@@ -19,6 +19,9 @@ function solution(n, s, a, b, fares) {
     G[to][from] = fare;
     G[from][to] = fare;
   });
+  for (let i = 1; i <= n; i++) {
+    G[i][i] = 0;
+  }
 
   for (let k = 1; k <= n; k++) {
     for (let a = 1; a <= n; a++) {
@@ -30,14 +33,15 @@ function solution(n, s, a, b, fares) {
 
   let result = Infinity;
 
-  const path1 = G[s][a] + G[a][b];
-  const path2 = G[s][b] + G[b][a];
-  const path3 = G[s][a] + G[s][b];
+  // const path1 = G[s][a] + G[a][b];
+  // const path2 = G[s][b] + G[b][a];
+  // const path3 = G[s][a] + G[s][b];
 
   for (let i = 1; i <= n; i++) {
     const path = G[s][i] + G[i][a] + G[i][b];
     result = Math.min(result, path);
   }
 
-  return Math.min(result, path1, path2, path3);
+  // return Math.min(result, path1, path2, path3);
+  return result;
 }

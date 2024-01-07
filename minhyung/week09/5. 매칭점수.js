@@ -32,12 +32,13 @@
 // 게으른: 가장 작은 범위를 찾음
 
 const getDefaultScore = (page, str) =>
-  page.match(new RegExp(`(\b|[^a-zA-Z])${str}(?![a-zA-Z])`, "gi"))?.length ?? 0;
+  page.match(new RegExp(`(\\b|[^a-zA-Z])${str}(?![a-zA-Z])`, "gi"))?.length ??
+  0;
 const getMyURL = (page) =>
   page.match(/<meta.*\bproperty="og:url".*\bcontent="(https:.*)".*\/>/i)[1];
 const getExternalLinks = (page) =>
   page
-    .match(/<a.*\bhref="(https:.*)">/gi)
+    .match(/<a.*?\bhref="(https:.*?)">/gi)
     ?.map((link) => link.match(/"(.*)"/)[1]) ?? [];
 
 function solution(word, pages) {
@@ -75,25 +76,3 @@ function solution(word, pages) {
   );
   return a[0][1].idx;
 }
-
-const page = `<html lang="ko" xml:lang="ko" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="utf-8">
-  <meta property="og:url" content="https://b.com"/>
-</head>
-<body>
-Suspendisse potenti. Vivamus venenatis tellus non turpis bibendum, 
-<a href="https://a.com"> Link to a </a>
-blind sed congue urna varius. Suspendisse feugiat nisl ligula, quis malesuada felis hendrerit ut.
-<a href="https://c.com"> Link to c </a> <a href="https://c.com"> Link to c </a> <a href="https://c.com"> Link to c </a>
-</body>
-</html>`;
-const func = (page, str) =>
-  page
-    .replace(/[^a-zA-Z]/gi, " ")
-    .split(/\s+/)
-    .filter((s) => new RegExp(`^${str}$`, "i").test(s)).length;
-
-console.log(func(page, "blind"));
-
-console.log(getExternalLinks(page));

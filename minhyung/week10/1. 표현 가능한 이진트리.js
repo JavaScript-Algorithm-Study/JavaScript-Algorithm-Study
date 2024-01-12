@@ -12,26 +12,21 @@
 
 // 1, 3, 7, 15, 31, 63, 127 ... 2^n - 1을 padding으로 채워서 포화이진트리를 만들어줌
 function makeCompleteBinaryTree(number) {
-  let sum = 1;
-  let level = 0;
-  const digit2 = number.toString(2);
-  const digit2Len = digit2.length;
-
-  while (true) {
-    if (digit2Len <= sum) {
-      return digit2.padStart(sum, "0");
+  for (const nodeNum of [1, 3, 7, 15, 31, 63]) {
+    const digit2 = number.toString(2);
+    if (nodeNum >= digit2.length) {
+      return digit2.padStart(nodeNum, "0");
     }
-    level += 1;
-    sum += 2 ** level;
   }
 }
-function isCorrectCompleteBinaryTree(arr, isSomewhereParentZero = false) {
-  const end = arr.length;
+
+function isCorrectCompleteBinaryTree(str, isSomewhereParentZero = false) {
+  const end = str.length;
   const mid = Math.floor(end / 2);
 
   // 현재 노드값 === 1 && 위쪽 노드 어딘가에 0이 있다면
   // 정상적인 트리가 아님 false 리턴
-  if (arr[mid] === "1" && isSomewhereParentZero) {
+  if (str[mid] === "1" && isSomewhereParentZero) {
     return false;
   }
   // 제대로 리프노드까지 도달하면 true 리턴
@@ -39,28 +34,15 @@ function isCorrectCompleteBinaryTree(arr, isSomewhereParentZero = false) {
     return true;
   }
   // 현재 가운데 노드(부모노드)가 0이라면 isSomewhereParentZero true로 바꿈
-  if (arr[mid] === "0") {
+  if (str[mid] === "0") {
     isSomewhereParentZero = true;
   }
 
-  const left = isCorrectCompleteBinaryTree(arr.slice(0, mid), isSomewhereParentZero);
-  if (!left) {
-    return false;
-  }
-  const right = isCorrectCompleteBinaryTree(arr.slice(mid + 1, end), isSomewhereParentZero);
-  if (!right) {
-    return false;
-  }
-
-  return true;
+  return (
+    isCorrectCompleteBinaryTree(str.slice(0, mid), isSomewhereParentZero) &&
+    isCorrectCompleteBinaryTree(str.slice(mid + 1, end), isSomewhereParentZero)
+  );
 }
 function solution(numbers) {
-  return numbers.map((number) => {
-    const completeBinaryTree = makeCompleteBinaryTree(number);
-    if (isCorrectCompleteBinaryTree(completeBinaryTree.split(""))) {
-      return 1;
-    } else {
-      return 0;
-    }
-  });
+  return numbers.map(makeCompleteBinaryTree).map((str) => (isCorrectCompleteBinaryTree(str) ? 1 : 0));
 }

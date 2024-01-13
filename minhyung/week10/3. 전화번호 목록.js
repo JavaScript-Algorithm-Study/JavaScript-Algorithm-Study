@@ -1,4 +1,4 @@
-// 문제링크: https://school.programmers.co.kr/learn/courses/30/lessons/150367
+// 문제링크: https://school.programmers.co.kr/learn/courses/30/lessons/42577
 // 시작날짜: 2024.01.13
 // 시작시간: 18:02
 // 종료시간: 18:23

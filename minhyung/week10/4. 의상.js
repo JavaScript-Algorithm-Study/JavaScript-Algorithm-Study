@@ -13,13 +13,10 @@
 // 이를 모두 곱해주면 모든 조합의 수가 나옴
 // 하지만 모든 의상을 안입는 경우는 제외해야하므로 1을 빼줌
 
-// prettier-ignore
+const counting = (acc, [_, type]) => acc.set(type, (acc.get(type) ?? 0) + 1);
+const makeClothingTypeSumsMap = (clothes) => clothes.reduce(counting, new Map());
+const multiplyCases = (acc, cur) => (acc *= cur + 1);
+
 function solution(clothes = []) {
-  return (
-    Array.from(
-      clothes
-        .reduce((acc, [_, type]) => acc.set(type, (acc.get(type) ?? 0) + 1), new Map())
-        .values()
-    ).reduce((acc, cur) => (acc *= (cur + 1)), 1) - 1
-  );
+  return Array.from(makeClothingTypeSumsMap(clothes).values()).reduce(multiplyCases, 1) - 1;
 }

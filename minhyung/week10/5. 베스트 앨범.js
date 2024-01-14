@@ -11,16 +11,16 @@
 // 4. 장르별 곡들을 2개씩 뽑아서 결과에 넣어줌
 
 function solution(genres, plays) {
-  const hash = {};
-  for (let i = 0; i < genres.length; i++) {
-    const [name, time] = [genres[i], plays[i]];
-    hash[name] = {
-      time: (hash[name]?.time ?? 0) + time,
-      list: [...(hash[name]?.list ?? []), { name, time, idx: i }],
-    };
-  }
-
-  return Object.entries(hash)
+  return Object.entries(
+    genres.reduce((acc, _, idx) => {
+      const [name, time] = [genres[idx], plays[idx]];
+      acc[name] = {
+        time: (acc[name]?.time ?? 0) + time,
+        list: [...(acc[name]?.list ?? []), { name, time, idx }],
+      };
+      return acc;
+    }, {})
+  )
     .sort((a, b) => b[1].time - a[1].time)
     .flatMap(([_, genre]) =>
       genre.list

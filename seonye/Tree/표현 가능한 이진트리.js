@@ -13,14 +13,10 @@ function solution(numbers) {
     while (!Number.isInteger(Math.log2(binaryString.length + 1))) {
       binaryString = '0' + binaryString;
     }
-    const height = Math.log2(binaryString.length + 1) - 1;
-    const rootIndex = Math.floor(binaryString.length / 2);
-    if (binaryString[rootIndex] === '0') {
-      answer.push(0);
-      continue;
-    }
 
+    const height = Math.log2(binaryString.length + 1) - 1;
     const isBinaryTree = dfs(binaryString, 0);
+
     answer.push(isBinaryTree ? 1 : 0);
 
     function dfs(tree, depth) {

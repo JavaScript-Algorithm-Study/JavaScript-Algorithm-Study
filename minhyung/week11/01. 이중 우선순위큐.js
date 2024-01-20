@@ -127,21 +127,21 @@ function solution(operations) {
 
 // 다 풀고 다른사람 풀이 보니까 shift를 쓰고 정렬을 써도 풀림...
 // 테케가 빈약해서 그런듯
-const isInsert = (str) => str.match(/I (.*)/)?.[1];
-const isDeleteMin = (str) => /D -1/.test(str);
-const isDeleteMax = (str) => /D 1/.test(str);
+// const isInsert = (str) => str.match(/I (.*)/)?.[1];
+// const isDeleteMin = (str) => /D -1/.test(str);
+// const isDeleteMax = (str) => /D 1/.test(str);
 
-function solution(operations) {
-  const arr = operations.reduce((acc, now) => {
-    if (isInsert(now)) {
-      acc.push(Number(isInsert(now)));
-      acc.sort((a, b) => a - b);
-    }
-    if (isDeleteMin(now)) acc.shift();
-    if (isDeleteMax(now)) acc.pop();
+// function solution(operations) {
+//   const arr = operations.reduce((acc, now) => {
+//     if (isInsert(now)) {
+//       acc.push(Number(isInsert(now)));
+//       acc.sort((a, b) => a - b);
+//     }
+//     if (isDeleteMin(now)) acc.shift();
+//     if (isDeleteMax(now)) acc.pop();
 
-    return acc;
-  }, []);
-  if (arr.length === 0) return [0, 0];
-  else return [Math.max(...arr), Math.min(...arr)];
-}
+//     return acc;
+//   }, []);
+//   if (arr.length === 0) return [0, 0];
+//   else return [Math.max(...arr), Math.min(...arr)];
+// }

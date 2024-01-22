@@ -1,9 +1,8 @@
 /*
 문제 : https://school.programmers.co.kr/learn/courses/30/lessons/60059
 난이도 : Level3
-
-5,6,9-11,16,19,20,22,35-38
 */
+
 function rotate90(key) {
   const temp = [];
   const keyLength = key.length;

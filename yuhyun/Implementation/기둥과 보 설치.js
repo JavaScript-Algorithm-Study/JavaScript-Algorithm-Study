@@ -30,16 +30,6 @@ function outOfRange(x, y, X, Y) {
 class Structure {
   static #PILLAR = 0;
   static #BEAM = 1;
-  static #DIR = [
-    [0, 1],
-    [1, 1],
-    [1, 0],
-    [1, -1],
-    [0, -1],
-    [-1, -1],
-    [-1, 0],
-    [-1, -1],
-  ];
 
   #n;
   #structure;
@@ -85,18 +75,22 @@ class Structure {
 
   #delete(row, col, type) {
     this.#structure[row][col][type] = false;
-    const canDelete = Structure.#DIR
-      .map(([dRow, dCol]) => [row + dRow, col + dCol])
-      .filter(
-        ([nextRow, nextCol]) => !outOfRange(nextRow, nextCol, this.#n, this.#n)
-      )
-      .every(
-        ([nextRow, nextCol]) =>
-          (!this.#getSafe(nextRow, nextCol, Structure.#PILLAR) ||
-            this.#isValidPillar(nextRow, nextCol)) &&
-          (!this.#getSafe(nextRow, nextCol, Structure.#BEAM) ||
-            this.#isValidBeam(nextRow, nextCol))
-      );
+
+    let canDelete = true;
+    for (let r = 0; r < this.#structure.length && canDelete; r += 1) {
+      for (let c = 0; c < this.#structure[r].length && canDelete; c += 1) {
+        const [addedPillar, addedBeam] = this.#structure[r][c];
+        if (addedPillar && !this.#isValidPillar(r, c)) {
+          canDelete = false;
+          break;
+        }
+
+        if (addedBeam && !this.#isValidBeam(r, c)) {
+          canDelete = false;
+          break;
+        }
+      }
+    }
 
     if (!canDelete) {
       this.#structure[row][col][type] = true;
@@ -108,7 +102,7 @@ class Structure {
       row === this.#n - 1 ||
       this.#getSafe(row + 1, col, Structure.#PILLAR) ||
       this.#getSafe(row, col - 1, Structure.#BEAM) ||
-      this.#getSafe(row, col + 1, Structure.#BEAM)
+      this.#getSafe(row, col, Structure.#BEAM)
     );
   }
 

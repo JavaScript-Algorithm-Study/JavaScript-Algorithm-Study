@@ -40,7 +40,7 @@ function solution(n, edges) {
     }
   }
 
-  return dists.map((row) => row.join(" ")).join("\n");
+  return dists.map((row) => row.map((col) => (col === Infinity ? 0 : col)).join(" ")).join("\n");
 }
 
 const n = Number(input());

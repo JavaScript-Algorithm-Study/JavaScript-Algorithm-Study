@@ -25,7 +25,9 @@ function solution(n, inorder, postorder) {
 
     result += `${inorder[root]} `;
 
+    //왼쪽
     preorder(inStart, root - 1, postStart, postStart + left - 1);
+    //오른쪽
     preorder(root + 1, inEnd, postEnd - right, postEnd - 1);
   }
 

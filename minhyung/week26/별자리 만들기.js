@@ -7,17 +7,6 @@ const stdin = process.platform === 'linux' ? require('fs').readFileSync(0, 'utf-
 `.trim().split('\n');
 const input = (() => ((l = 0), () => stdin[l++].split(" ").map(Number)))();
 
-// union-find 알고리즘을 위한 parents
-function getUnionFindParents(nodes) {
-  const parents = new Map();
-
-  nodes.forEach(([x, y]) => {
-    const key = `${x},${y}`;
-    parents.set(key, key);
-  });
-
-  return parents;
-}
 // node간 edge 거리 계산
 function getEdges(nodes) {
   const edges = []; //new Map();

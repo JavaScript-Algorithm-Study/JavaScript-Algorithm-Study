@@ -11,26 +11,36 @@ const stdin = process.platform === 'linux' ? require('fs').readFileSync(0, 'utf-
 const input = (() => ((l = 0), () => stdin[l++].split(" ").map(Number)))();
 
 function useUnionFind(n) {
-  const parents = Array.from({ length: n }, (_, idx) => idx);
+  const parents = Array.from({ length: n }, () => -1);
 
-  function find(n) {
-    if (parents[n] !== n) {
-      parents[n] = find(parents[n]);
+  function find(x) {
+    if (parents[x] < 0) return x;
+    else {
+      parents[x] = find(parents[x]);
+      return parents[x];
     }
-    return parents[n];
   }
 
   function union(a, b) {
-    const rootA = find(a);
-    const rootB = find(b);
-    if (rootA < rootB) parents[rootB] = rootA;
-    else parents[rootA] = rootB;
+    const x = find(a);
+    const y = find(b);
+
+    if (x === y) return;
+
+    // 값이 더 작은 쪽이 높이가 높은 노드
+    if (parents[x] < parents[y]) {
+      parents[x] += parents[y];
+      parents[y] = x;
+    } else {
+      parents[y] += parents[x];
+      parents[x] = y;
+    }
   }
 
   return { union, find };
 }
 function solution(n, edges) {
-  const { union, find } = useUnionFind(n);
+  const { union, find, parents } = useUnionFind(n);
 
   for (let i = 0; i < edges.length; i++) {
     const [from, to] = edges[i];
